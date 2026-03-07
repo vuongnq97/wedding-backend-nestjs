@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ========================================
+// Wedding — matches .NET Wedding.cs + Value Objects
+// Value Objects are stored as JSON (PostgreSQL JSONB)
+// ========================================
+model Wedding {
+  id            String   @id @default(uuid())
+  ownerUserId   String   // FK → Supabase auth.users (no DB relation, managed by Supabase)
+  slug          String   @unique
+  heroBannerUrl String?
+  templateCode  String
+  weddingDate   DateTime
+
+  // JSON fields for complex nested objects (Value Objects from .NET)
+  groom        Json // PersonDetail { fullName, fatherName, motherName, birthOrder, address, photoUrl }
+  bride        Json // PersonDetail { fullName, fatherName, motherName, birthOrder, address, photoUrl }
+  notification Json // NotificationDetail { line1, line2 }
+  ceremony     Json // CeremonyDetail { show, date, time }
+  reception    Json // ReceptionDetail { date, time, address }
+  map          Json // MapDetail { show, link, locationName, locationAddress, latitude, longitude }
+  music        Json // MusicDetail { enabled, url, name }
+
+  // JSON arrays for collections
+  milestones   Json @default("[]") // MilestoneDto[] { id, date, title, description, photoUrl }
+  albumPhotos  Json @default("[]") // WeddingPhotoDto[] { id, url }
+  bankAccounts Json @default("[]") // BankAccountDto[] { id, bankName, accountNumber, accountHolder, owner }
+
+  thankYouMessage  String?
+  guestbookEnabled Boolean @default(true)
+  showAds          Boolean @default(false)
+  showLoveStory    Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  rsvps Rsvp[]
+
+  @@map("weddings")
+}
+
+// ========================================
+// RSVP — matches .NET Rsvp.cs
+// ========================================
+model Rsvp {
+  id        String   @id @default(uuid())
+  weddingId String
+  wedding   Wedding  @relation(fields: [weddingId], references: [id], onDelete: Cascade)
+  fullName  String
+  attending Int      @default(0) // 0=Pending, 1=Yes, 2=No
+  guests    Int      @default(0)
+  message   String?
+  createdAt DateTime @default(now())
+
+  @@map("rsvps")
+}
