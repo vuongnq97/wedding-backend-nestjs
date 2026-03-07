@@ -7,7 +7,10 @@ const app_module_1 = require("./app.module");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors({
-        origin: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3001'],
+        origin: process.env.CORS_ORIGINS?.split(',') || [
+            'http://localhost:3001',
+            'https://wedding-invited.vercel.app',
+        ],
         credentials: true,
     });
     app.useGlobalPipes(new common_1.ValidationPipe({

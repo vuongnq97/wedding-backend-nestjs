@@ -8,7 +8,10 @@ async function bootstrap() {
 
   // CORS
   app.enableCors({
-    origin: process.env.CORS_ORIGINS?.split(',') || ['http://localhost:3001'],
+    origin: process.env.CORS_ORIGINS?.split(',') || [
+      'http://localhost:3001',
+      'https://wedding-invited.vercel.app',
+    ],
     credentials: true,
   });
 
