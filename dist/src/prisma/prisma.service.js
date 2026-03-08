@@ -21,14 +21,15 @@ let PrismaService = PrismaService_1 = class PrismaService extends client_1.Prism
         if (!connectionString) {
             throw new Error('DATABASE_URL is not set');
         }
-        const url = new URL(connectionString);
-        if (!url.searchParams.has('sslmode')) {
-            url.searchParams.set('sslmode', 'require');
+        let finalUrl = connectionString;
+        if (!finalUrl.includes('sslmode=')) {
+            finalUrl += finalUrl.includes('?') ? '&sslmode=require' : '?sslmode=require';
         }
         const adapter = new adapter_pg_1.PrismaPg({
-            connectionString: url.toString(),
+            connectionString: finalUrl,
         });
         super({ adapter });
+        this.logger.log(`DB URL prefix: ${connectionString.substring(0, 40)}...`);
     }
     async onModuleInit() {
         try {

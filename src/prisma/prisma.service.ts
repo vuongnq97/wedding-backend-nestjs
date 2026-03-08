@@ -15,17 +15,19 @@ export class PrismaService
             throw new Error('DATABASE_URL is not set');
         }
 
-        // Append sslmode=require if not already present (Supabase requires SSL for external connections)
-        const url = new URL(connectionString);
-        if (!url.searchParams.has('sslmode')) {
-            url.searchParams.set('sslmode', 'require');
+        // Append sslmode=require if not already present
+        let finalUrl = connectionString;
+        if (!finalUrl.includes('sslmode=')) {
+            finalUrl += finalUrl.includes('?') ? '&sslmode=require' : '?sslmode=require';
         }
 
         const adapter = new PrismaPg({
-            connectionString: url.toString(),
+            connectionString: finalUrl,
         });
 
         super({ adapter });
+
+        this.logger.log(`DB URL prefix: ${connectionString.substring(0, 40)}...`);
     }
 
     async onModuleInit() {
