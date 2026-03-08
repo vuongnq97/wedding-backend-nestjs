@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WeddingDto = exports.MusicDto = exports.MapDto = exports.ReceptionDto = exports.CeremonyDto = exports.NotificationDto = exports.BankAccountDto = exports.BankAccountOwner = exports.WeddingPhotoDto = exports.MilestoneDto = exports.PersonDetailDto = void 0;
+exports.WeddingDto = exports.MusicDto = exports.MapDto = exports.ReceptionDto = exports.CeremonyDto = exports.NotificationDto = exports.BankAccountDto = exports.WeddingPhotoDto = exports.MilestoneDto = exports.PersonDetailDto = void 0;
 const class_transformer_1 = require("class-transformer");
 const class_validator_1 = require("class-validator");
 class PersonDetailDto {
@@ -98,11 +98,6 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], WeddingPhotoDto.prototype, "url", void 0);
-var BankAccountOwner;
-(function (BankAccountOwner) {
-    BankAccountOwner["Groom"] = "Groom";
-    BankAccountOwner["Bride"] = "Bride";
-})(BankAccountOwner || (exports.BankAccountOwner = BankAccountOwner = {}));
 class BankAccountDto {
     id;
     bankName;
@@ -129,9 +124,8 @@ __decorate([
     __metadata("design:type", String)
 ], BankAccountDto.prototype, "accountHolder", void 0);
 __decorate([
-    (0, class_validator_1.IsEnum)(BankAccountOwner),
     (0, class_validator_1.IsOptional)(),
-    __metadata("design:type", String)
+    __metadata("design:type", Object)
 ], BankAccountDto.prototype, "owner", void 0);
 class NotificationDto {
     line1;
@@ -344,6 +338,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.ValidateNested)(),
     (0, class_transformer_1.Type)(() => MapDto),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", MapDto)
 ], WeddingDto.prototype, "map", void 0);
 __decorate([
@@ -364,6 +359,7 @@ __decorate([
 __decorate([
     (0, class_validator_1.ValidateNested)(),
     (0, class_transformer_1.Type)(() => MusicDto),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", MusicDto)
 ], WeddingDto.prototype, "music", void 0);
 __decorate([

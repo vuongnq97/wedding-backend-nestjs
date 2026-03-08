@@ -33,7 +33,7 @@ export class WeddingService {
                 ownerUserId: userId,
                 slug,
                 templateCode: dto.templateCode,
-                weddingDate: new Date(dto.weddingDate || new Date()),
+                weddingDate: new Date(dto.weddingDate || dto.reception?.date || new Date()),
                 heroBannerUrl: dto.heroBannerUrl,
 
                 groom: dto.groom as any,
@@ -74,7 +74,7 @@ export class WeddingService {
             data: {
                 slug,
                 templateCode: dto.templateCode,
-                weddingDate: new Date(dto.weddingDate),
+                weddingDate: new Date(dto.weddingDate || dto.reception?.date || existing.weddingDate),
                 heroBannerUrl: dto.heroBannerUrl,
 
                 groom: dto.groom as any,

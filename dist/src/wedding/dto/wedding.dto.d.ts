@@ -17,16 +17,12 @@ export declare class WeddingPhotoDto {
     id?: string;
     url: string;
 }
-export declare enum BankAccountOwner {
-    Groom = "Groom",
-    Bride = "Bride"
-}
 export declare class BankAccountDto {
     id?: string;
     bankName: string;
     accountNumber: string;
     accountHolder: string;
-    owner: BankAccountOwner;
+    owner: number | string;
 }
 export declare class NotificationDto {
     line1: string;
@@ -61,7 +57,7 @@ export declare class WeddingDto {
     ownerUserId?: string;
     heroBannerUrl?: string;
     templateCode: string;
-    weddingDate: string;
+    weddingDate?: string;
     groom: PersonDetailDto;
     bride: PersonDetailDto;
     milestones: MilestoneDto[];
@@ -69,11 +65,11 @@ export declare class WeddingDto {
     notification: NotificationDto;
     ceremony: CeremonyDto;
     reception: ReceptionDto;
-    map: MapDto;
+    map?: MapDto;
     thankYouMessage?: string;
     guestbookEnabled: boolean;
     bankAccounts: BankAccountDto[];
-    music: MusicDto;
+    music?: MusicDto;
     showAds: boolean;
     showLoveStory: boolean;
     createdAt?: string;

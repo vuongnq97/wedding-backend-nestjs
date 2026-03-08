@@ -73,11 +73,6 @@ export class WeddingPhotoDto {
 }
 
 // === BankAccountDto — matches .NET BankAccountDto ===
-export enum BankAccountOwner {
-    Groom = 'Groom',
-    Bride = 'Bride',
-}
-
 export class BankAccountDto {
     @IsUUID()
     @IsOptional()
@@ -92,9 +87,8 @@ export class BankAccountDto {
     @IsString()
     accountHolder: string;
 
-    @IsEnum(BankAccountOwner)
     @IsOptional()
-    owner: BankAccountOwner;
+    owner: number | string; // FE sends 0 (groom) / 1 (bride)
 }
 
 // === NotificationDto — matches .NET NotificationDetail.cs ===
@@ -204,7 +198,7 @@ export class WeddingDto {
 
     @IsDateString()
     @IsOptional()
-    weddingDate: string;
+    weddingDate?: string;
 
     @ValidateNested()
     @Type(() => PersonDetailDto)
@@ -238,7 +232,8 @@ export class WeddingDto {
 
     @ValidateNested()
     @Type(() => MapDto)
-    map: MapDto;
+    @IsOptional()
+    map?: MapDto;
 
     @IsString()
     @IsOptional()
@@ -254,7 +249,8 @@ export class WeddingDto {
 
     @ValidateNested()
     @Type(() => MusicDto)
-    music: MusicDto;
+    @IsOptional()
+    music?: MusicDto;
 
     @IsBoolean()
     showAds: boolean;

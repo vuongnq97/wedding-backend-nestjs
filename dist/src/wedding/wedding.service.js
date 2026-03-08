@@ -38,7 +38,7 @@ let WeddingService = class WeddingService {
                 ownerUserId: userId,
                 slug,
                 templateCode: dto.templateCode,
-                weddingDate: new Date(dto.weddingDate || new Date()),
+                weddingDate: new Date(dto.weddingDate || dto.reception?.date || new Date()),
                 heroBannerUrl: dto.heroBannerUrl,
                 groom: dto.groom,
                 bride: dto.bride,
@@ -76,7 +76,7 @@ let WeddingService = class WeddingService {
             data: {
                 slug,
                 templateCode: dto.templateCode,
-                weddingDate: new Date(dto.weddingDate),
+                weddingDate: new Date(dto.weddingDate || dto.reception?.date || existing.weddingDate),
                 heroBannerUrl: dto.heroBannerUrl,
                 groom: dto.groom,
                 bride: dto.bride,
