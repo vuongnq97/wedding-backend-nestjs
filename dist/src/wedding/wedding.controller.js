@@ -25,13 +25,23 @@ let WeddingController = class WeddingController {
         this.service = service;
     }
     async create(dto, userId) {
-        const result = await this.service.create(dto, userId);
-        return {
-            succeeded: true,
-            message: 'Wedding created successfully',
-            data: result,
-            statusCode: 200,
-        };
+        try {
+            const result = await this.service.create(dto, userId);
+            return {
+                succeeded: true,
+                message: 'Wedding created successfully',
+                data: result,
+                statusCode: 200,
+            };
+        }
+        catch (error) {
+            return {
+                succeeded: false,
+                message: error?.message || 'Unknown error',
+                error: error?.stack?.substring(0, 500),
+                statusCode: 500,
+            };
+        }
     }
     async update(dto) {
         const result = await this.service.update(dto);

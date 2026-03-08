@@ -21,13 +21,22 @@ export class WeddingController {
 
     @Post()
     async create(@Body() dto: WeddingDto, @CurrentUser('id') userId: string) {
-        const result = await this.service.create(dto, userId);
-        return {
-            succeeded: true,
-            message: 'Wedding created successfully',
-            data: result,
-            statusCode: 200,
-        };
+        try {
+            const result = await this.service.create(dto, userId);
+            return {
+                succeeded: true,
+                message: 'Wedding created successfully',
+                data: result,
+                statusCode: 200,
+            };
+        } catch (error: any) {
+            return {
+                succeeded: false,
+                message: error?.message || 'Unknown error',
+                error: error?.stack?.substring(0, 500),
+                statusCode: 500,
+            };
+        }
     }
 
     @Put()

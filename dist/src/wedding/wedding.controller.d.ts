@@ -8,6 +8,13 @@ export declare class WeddingController {
         message: string;
         data: WeddingDto;
         statusCode: number;
+        error?: undefined;
+    } | {
+        succeeded: boolean;
+        message: any;
+        error: any;
+        statusCode: number;
+        data?: undefined;
     }>;
     update(dto: WeddingDto): Promise<{
         succeeded: boolean;
