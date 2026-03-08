@@ -26,14 +26,14 @@ let AppController = class AppController {
     }
     async health() {
         try {
-            const result = await this.prisma.$queryRawUnsafe('SELECT 1 as ok');
+            const count = await this.prisma.wedding.count();
             return {
                 status: 'ok',
                 db: 'connected',
-                result,
+                weddingCount: count,
                 env: {
                     hasDbUrl: !!process.env.DATABASE_URL,
-                    dbUrlPrefix: process.env.DATABASE_URL?.substring(0, 30) + '...',
+                    dbUrlPrefix: process.env.DATABASE_URL?.substring(0, 40) + '...',
                     hasSupabaseUrl: !!process.env.SUPABASE_URL,
                     nodeEnv: process.env.NODE_ENV,
                 },
@@ -43,10 +43,12 @@ let AppController = class AppController {
             return {
                 status: 'error',
                 db: 'failed',
-                error: error.message,
+                errorMessage: error?.message || 'unknown',
+                errorName: error?.name || 'unknown',
+                errorStack: error?.stack?.substring(0, 300),
                 env: {
                     hasDbUrl: !!process.env.DATABASE_URL,
-                    dbUrlPrefix: process.env.DATABASE_URL?.substring(0, 30) + '...',
+                    dbUrlPrefix: process.env.DATABASE_URL?.substring(0, 40) + '...',
                     hasSupabaseUrl: !!process.env.SUPABASE_URL,
                     nodeEnv: process.env.NODE_ENV,
                 },

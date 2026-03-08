@@ -8,24 +8,28 @@ export declare class AppController {
     health(): Promise<{
         status: string;
         db: string;
-        result: unknown;
+        weddingCount: number;
         env: {
             hasDbUrl: boolean;
             dbUrlPrefix: string;
             hasSupabaseUrl: boolean;
             nodeEnv: string | undefined;
         };
-        error?: undefined;
+        errorMessage?: undefined;
+        errorName?: undefined;
+        errorStack?: undefined;
     } | {
         status: string;
         db: string;
-        error: any;
+        errorMessage: any;
+        errorName: any;
+        errorStack: any;
         env: {
             hasDbUrl: boolean;
             dbUrlPrefix: string;
             hasSupabaseUrl: boolean;
             nodeEnv: string | undefined;
         };
-        result?: undefined;
+        weddingCount?: undefined;
     }>;
 }

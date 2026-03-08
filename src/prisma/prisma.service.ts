@@ -1,7 +1,6 @@
 import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { Pool } from 'pg';
 
 @Injectable()
 export class PrismaService
@@ -16,19 +15,17 @@ export class PrismaService
             throw new Error('DATABASE_URL is not set');
         }
 
-        // Use pg Pool with SSL configured for Supabase
-        const pool = new Pool({
-            connectionString,
-            ssl: {
-                rejectUnauthorized: false, // Supabase pooler uses self-signed certs
-            },
-        });
+        // Append sslmode=no-verify for Supabase pooler (self-signed cert)
+        let finalUrl = connectionString;
+        if (!finalUrl.includes('sslmode=')) {
+            finalUrl += finalUrl.includes('?') ? '&sslmode=no-verify' : '?sslmode=no-verify';
+        }
 
-        const adapter = new PrismaPg({ pool });
+        const adapter = new PrismaPg({ connectionString: finalUrl });
 
         super({ adapter });
 
-        this.logger.log('PrismaService initialized with SSL');
+        this.logger.log('PrismaService initialized');
     }
 
     async onModuleInit() {
