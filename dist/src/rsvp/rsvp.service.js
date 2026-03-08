@@ -17,16 +17,38 @@ let RsvpService = class RsvpService {
     constructor(prisma) {
         this.prisma = prisma;
     }
+    parseAttending(value) {
+        if (value === undefined || value === null)
+            return 0;
+        if (typeof value === 'number')
+            return value;
+        const map = { yes: 1, no: 2, unknown: 0 };
+        return map[value.toLowerCase()] ?? 0;
+    }
     async create(dto) {
-        const wedding = await this.prisma.wedding.findUnique({ where: { id: dto.weddingId } });
+        let weddingId = dto.weddingId;
+        if (!weddingId && dto.slug) {
+            const wedding = await this.prisma.wedding.findUnique({
+                where: { slug: dto.slug },
+            });
+            if (!wedding)
+                throw new common_1.NotFoundException('Wedding not found');
+            weddingId = wedding.id;
+        }
+        if (!weddingId) {
+            throw new common_1.BadRequestException('weddingId or slug is required');
+        }
+        const wedding = await this.prisma.wedding.findUnique({
+            where: { id: weddingId },
+        });
         if (!wedding)
             throw new common_1.NotFoundException('Wedding not found');
         const created = await this.prisma.rsvp.create({
             data: {
-                weddingId: dto.weddingId,
+                weddingId,
                 fullName: dto.fullName,
-                attending: dto.attending,
-                guests: dto.guests,
+                attending: this.parseAttending(dto.attending),
+                guests: dto.guests ?? 1,
                 message: dto.message,
             },
         });

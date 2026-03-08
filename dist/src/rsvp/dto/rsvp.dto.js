@@ -9,16 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RsvpDto = exports.CreateRsvpDto = exports.AttendingStatus = void 0;
+exports.RsvpDto = exports.CreateRsvpDto = void 0;
 const class_validator_1 = require("class-validator");
-var AttendingStatus;
-(function (AttendingStatus) {
-    AttendingStatus[AttendingStatus["Unknown"] = 0] = "Unknown";
-    AttendingStatus[AttendingStatus["Yes"] = 1] = "Yes";
-    AttendingStatus[AttendingStatus["No"] = 2] = "No";
-})(AttendingStatus || (exports.AttendingStatus = AttendingStatus = {}));
 class CreateRsvpDto {
     weddingId;
+    slug;
     fullName;
     attending;
     guests;
@@ -27,22 +22,25 @@ class CreateRsvpDto {
 exports.CreateRsvpDto = CreateRsvpDto;
 __decorate([
     (0, class_validator_1.IsUUID)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], CreateRsvpDto.prototype, "weddingId", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], CreateRsvpDto.prototype, "slug", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateRsvpDto.prototype, "fullName", void 0);
 __decorate([
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Number)
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Object)
 ], CreateRsvpDto.prototype, "attending", void 0);
 __decorate([
-    (0, class_validator_1.IsInt)(),
-    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", Number)
 ], CreateRsvpDto.prototype, "guests", void 0);
 __decorate([

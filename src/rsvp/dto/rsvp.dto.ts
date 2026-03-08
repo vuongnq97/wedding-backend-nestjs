@@ -1,31 +1,27 @@
-import { IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
-
-export enum AttendingStatus {
-    Unknown = 0,
-    Yes = 1,
-    No = 2,
-}
+import { IsInt, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateRsvpDto {
     @IsUUID()
-    @IsNotEmpty()
-    weddingId: string;
+    @IsOptional()
+    weddingId?: string;
+
+    @IsString()
+    @IsOptional()
+    slug?: string; // FE sends slug instead of weddingId
 
     @IsString()
     @IsNotEmpty()
     fullName: string;
 
-    @IsInt()
-    @IsNotEmpty()
-    attending: AttendingStatus;
+    @IsOptional()
+    attending: number | string; // FE sends "yes"/"no", BE converts to 0/1/2
 
-    @IsInt()
-    @IsNotEmpty()
-    guests: number;
+    @IsOptional()
+    guests?: number;
 
     @IsString()
     @IsOptional()
-    message: string;
+    message?: string;
 }
 
 export class RsvpDto extends CreateRsvpDto {
